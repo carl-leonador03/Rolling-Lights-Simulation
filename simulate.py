@@ -1,6 +1,7 @@
 import streamlit as st
 import simulation as sim
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # Initialize constants and variables in persistent session token.
 st.session_state.NUM_BULBS = st.session_state.get('NUM_BULBS', 12)
@@ -154,7 +155,25 @@ if st.button("Simulate", icon = ":material/play_circle:", type = "primary"):
             del cumm_player_profit_fair
             del cumm_player_profit_tweaked
 
-            st.line_chart(data = cumm_player_profits, x_label = "Rounds", y_label = "Profits ($)")
+            fig, ax = plt.subplots()
+
+            if st.context.theme.type == "dark":
+                plt.style.use("dark_background")
+            
+            else:
+                plt.style.use("default")
+
+            fig.set_size_inches(10, 8)
+            ax.plot(cumm_player_profits['Fair Game'], label = "Fair Game", color = "green")
+            ax.plot(cumm_player_profits['Tweaked Game'], label = "Tweaked Game", color = "orange")
+            ax.legend()
+            ax.set_xlabel("Rounds")
+            ax.set_ylabel("Profits ($)")
+            ax.ticklabel_format(axis = "y", style = "plain", useOffset = False)
+
+            st.pyplot(fig)
+
+            del cumm_player_profits
 
         # Profit Distribution Comparison
         with st.container(border = True):
