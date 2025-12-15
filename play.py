@@ -207,17 +207,18 @@ with st.container(border = True, horizontal = True):
                 st.session_state.balance -= st.session_state.bet_amount
 
                 # Number of animation steps
-                spins = np.random.randint(25, 45)
+                # spins = np.random.randint(25, 45)
+
+                reward = game.play()
 
                 # Spin animation loop
-                for i in range(spins):
-                    st.session_state.current = (st.session_state.current + 1) % st.session_state.NUM_BULBS
+                for i in range((st.session_state.NUM_BULBS * 3) + (game.selected + 1)):
+                    st.session_state.current = i % st.session_state.NUM_BULBS
                     wheel.pyplot(draw_wheel(st.session_state.current))
                     time.sleep(st.session_state.SPIN_SPEED + 1 * 0.003)
                 
                 # Get outcome from game object.
                 # Add to balance, if won.
-                game.play()
                 idx = game.selected
                 
                 if st.session_state.bet == idx:
@@ -226,14 +227,6 @@ with st.container(border = True, horizontal = True):
                     st.session_state.result_prize = prize
 
                 st.session_state.house_bank = game.initial_bank
-
-                # Render final wheel state
-                wheel.pyplot(
-                    draw_wheel(
-                        st.session_state.current,
-                        highlight = st.session_state.result_prize is not None
-                    )
-                )
 
                 # Display prize result, if won
                 if st.session_state.bet == st.session_state.current:
@@ -244,4 +237,10 @@ with st.container(border = True, horizontal = True):
                 else:
                     st.error(f"Sorry! You didn't won.", icon = ":material/sentiment_dissatisfied:")
 
-
+# Render final wheel state
+wheel.pyplot(
+    draw_wheel(
+        st.session_state.current,
+        highlight = st.session_state.result_prize is not None
+    )
+)
