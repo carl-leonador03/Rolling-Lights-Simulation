@@ -61,9 +61,10 @@ def draw_wheel(active_index, highlight = False):
     ax.set_facecolor("#111111")
 
     # Draw outer and inner rings
-    ax.add_artist(plt.Circle((0, 0), st.session_state.RADIUS, fill = False,
+    ax.add_artist(plt.Circle((0, 0), st.session_state.RADIUS, fill = False, # pyright: ignore[reportPrivateImportUsage]
                              linewidth = 4, color = "white"))
-    ax.add_artist(plt.Circle((0, 0), st.session_state.RADIUS * 0.7, fill = False,
+
+    ax.add_artist(plt.Circle((0, 0), st.session_state.RADIUS * 0.7, fill = False, # pyright: ignore[reportPrivateImportUsage]
                              linewidth = 2, color = "#777"))
 
     # Compute the angles for bulb placement
@@ -107,7 +108,7 @@ def draw_wheel(active_index, highlight = False):
 
         # Draw bulb numbers
         ax.text(
-            btx, bty, i,
+            btx, bty, i, # type: ignore
             ha = "center", va = "center",
             rotation = rotation, rotation_mode = "anchor",
             color = color,
@@ -226,21 +227,21 @@ with st.container(border = True, horizontal = True):
 
                 st.session_state.house_bank = game.initial_bank
 
-# Render final wheel state
-wheel.pyplot(
-    draw_wheel(
-        st.session_state.current,
-        highlight = st.session_state.result_prize is not None
-    )
-)
+                # Render final wheel state
+                wheel.pyplot(
+                    draw_wheel(
+                        st.session_state.current,
+                        highlight = st.session_state.result_prize is not None
+                    )
+                )
 
-# Display prize result, if won
-if st.session_state.bet == st.session_state.current:
-    if st.session_state.result_prize:
-        if st.session_state.result_prize == 1000:
-            st.balloons() # Jackpot effect
-        st.success(f"Prize won: ${st.session_state.result_prize}", icon = ":material/award_star:")
-else:
-    st.error(f"Sorry! You didn't won.", icon = ":material/sentiment_dissatisfied:")
+                # Display prize result, if won
+                if st.session_state.bet == st.session_state.current:
+                    if st.session_state.result_prize:
+                        if st.session_state.result_prize == 1000:
+                            st.balloons() # Jackpot effect
+                        st.success(f"Prize won: ${st.session_state.result_prize}", icon = ":material/award_star:")
+                else:
+                    st.error(f"Sorry! You didn't won.", icon = ":material/sentiment_dissatisfied:")
 
 

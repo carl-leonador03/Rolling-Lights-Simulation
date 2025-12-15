@@ -15,6 +15,12 @@ def on_weight_change(light):
     other_weights = sum([st.session_state.WEIGHTS[i] for i in range(len(st.session_state.WEIGHTS)) if i != light]) * 100
     k = float((1 - changed_weight) / other_weights)
 
+    # It follows the following function:
+    # w_light = weight_changed
+    # w_light + sum(P(l) for l in lights if l != light)k = 1
+    # Solve for k.
+    # for i in lights: if i != light: w[i] = w[i] * k
+
     for l in range(len(st.session_state.WEIGHTS)):
         if l != light:
             st.session_state.WEIGHTS[l] = (st.session_state.WEIGHTS[l] * 100) * k
@@ -184,8 +190,8 @@ if st.button("Simulate", icon = ":material/play_circle:", type = "primary"):
                     st.bar_chart(
                         pd.DataFrame(
                             {
-                                "Fair Game": [fair_win_rate,],
-                                "Tweaked Game": [tweaked_win_rate,]
+                                "Fair Game": [fair_win_rate * 100,],
+                                "Tweaked Game": [tweaked_win_rate * 100,]
                             }
                         ),
                         stack = False, y_label = "Perrcent (%)"

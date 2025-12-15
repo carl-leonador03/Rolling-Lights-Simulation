@@ -1,9 +1,8 @@
-# ================== IMPORTS ==================
 # Streamlit is used to build the interactive web app
 import streamlit as st
 
 # ======== PAGES SETUP =============
-# This section defines and includes the pages for the web apps.
+# This section defines and includes the pages for the web app.
 pg = st.navigation(
     [
         st.Page("home.py", title = "Home", icon = ":material/house:"),
